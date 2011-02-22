@@ -8,7 +8,7 @@ $gwapi = new gw_api;
 //list departments
 $departments = $gwapi->get_schedule();
 foreach ($departments as $department)
-    echo $department->departmentname . '<br />';
+    echo $department->departmentname . '<br />';
 
 //get course schedule for fall 2010
 $courses = $gwapi->get_schedule('2011','03','ACCY');
