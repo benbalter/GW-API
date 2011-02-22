@@ -8,7 +8,7 @@ $gwapi = new gw_api;
 //list departments
 $departments = $gwapi->get_schedule();
 foreach ($departments as $department)
-ÊÊÊÊecho $department->departmentname . '<br />';
+Â Â Â Â echo $department->departmentname . '<br />';
 
 //get course schedule for fall 2010
 $courses = $gwapi->get_schedule('2011','03','ACCY');
@@ -21,5 +21,4 @@ $categories = $gwapi->get_map();
 
 //get buildings
 $buildings = $gwapi->get_maps('academic');
-
 ?>
