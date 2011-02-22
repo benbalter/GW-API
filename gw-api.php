@@ -1,64 +1,63 @@
 <?php
-
 class gw_api {
-Ê
-ÊÊÊÊpublic function __construct() {
-Ê
-ÊÊÊÊÊÊÊÊ//configuration settings
-ÊÊÊÊÊÊÊÊ$this->user_agent = 'Mozilla/5.0 (iPhone; U; CPU iPhone OS 4_0 like Mac OS X; en-us) AppleWebKit/532.9 (KHTML, like Gecko) Version/4.0.5 Mobile/8A293 Safari/6531.22.7';
-ÊÊÊÊÊÊÊÊ$this->maps_base = 'http://citl.gwu.edu/iphonedev/maps/';
-ÊÊÊÊÊÊÊÊ$this->schedule_base = 'http://my.gwu.edu/mod/pws/scheduleXML.cfm';
-ÊÊÊÊ}
-Ê
-ÊÊÊÊpublic function get_url($url) {
-Ê
-ÊÊÊÊÊÊÊÊ//prefer the WP HTTP API to allow for caching and user agent spoofing, fall back if necessary
-ÊÊÊÊÊÊÊÊif ( function_exists( 'wp_remote_get') )
-ÊÊÊÊÊÊÊÊÊÊÊÊ$data = wp_remote_retrieve_body( wp_remote_get($url, array('user-agent' => $this->user_agent) ) );
-ÊÊÊÊÊÊÊÊelse
-ÊÊÊÊÊÊÊÊÊÊÊÊ$data = file_get_contents($url);
-Ê
-ÊÊÊÊÊÊÊÊ//parse the XML into a PHP object
-ÊÊÊÊÊÊÊÊ$xml = simplexml_load_string($data, 'SimpleXMLElement', LIBXML_NOCDATA);
-Ê
-ÊÊÊÊÊÊÊÊreturn $xml;
-ÊÊÊÊ}
-Ê
-ÊÊÊÊpublic function get_map($category = 'categories') {
-ÊÊÊÊÊÊÊÊreturn $this->get_url($this->maps_base . $category . '.xml');
-ÊÊÊÊ}
-Ê
-ÊÊÊÊpublic function get_schedule($year = '', $term ='', $dept = ''){
-Ê
-ÊÊÊÊÊÊÊÊ//if no year was given, assume the current year
-ÊÊÊÊÊÊÊÊif ($year == '')
-ÊÊÊÊÊÊÊÊÊÊÊÊ$year = date('Y');
-Ê
-ÊÊÊÊÊÊÊÊ//if no term is given, calculate the current term
-ÊÊÊÊÊÊÊÊif ($term == '')
-ÊÊÊÊÊÊÊÊÊÊÊÊ$term = $this->get_term();
-Ê
-ÊÊÊÊÊÊÊÊ//form URL and call
-ÊÊÊÊÊÊÊÊreturn $this->get_url($this->schedule_base . '?termCode=' . $year . $term . '&deptCode=' . $dept);
-ÊÊÊÊ}
-Ê
-ÊÊÊÊpublic function get_term() {
-Ê
-ÊÊÊÊÊÊÊÊ//get the current month as 01-12
-ÊÊÊÊÊÊÊÊ$m = date('M');
-Ê
-ÊÊÊÊÊÊÊÊ//if it is jan. - april, we're in the spring
-ÊÊÊÊÊÊÊÊif ($m < 5)
-ÊÊÊÊÊÊÊÊÊÊÊÊreturn '01';
-Ê
-ÊÊÊÊÊÊÊÊ//if it's May - August, we're in the summer
-ÊÊÊÊÊÊÊÊelse if ($m < 9) {
-ÊÊÊÊÊÊÊÊÊÊÊÊreturn '02';
-ÊÊÊÊÊÊÊÊ} 
-Ê
-ÊÊÊÊÊÊÊÊ//otherwise, it's fall
-ÊÊÊÊÊÊÊÊelse return '03';
-ÊÊÊÊ}
-Ê
+Â 
+Â Â Â Â public function __construct() {
+Â 
+Â Â Â Â Â Â Â Â //configuration settings
+Â Â Â Â Â Â Â Â $this->user_agent = 'Mozilla/5.0 (iPhone; U; CPU iPhone OS 4_0 like Mac OS X; en-us) AppleWebKit/532.9 (KHTML, like Gecko) Version/4.0.5 Mobile/8A293 Safari/6531.22.7';
+Â Â Â Â Â Â Â Â $this->maps_base = 'http://citl.gwu.edu/iphonedev/maps/';
+Â Â Â Â Â Â Â Â $this->schedule_base = 'http://my.gwu.edu/mod/pws/scheduleXML.cfm';
+Â Â Â Â }
+Â 
+Â Â Â Â public function get_url($url) {
+Â 
+Â Â Â Â Â Â Â Â //prefer the WP HTTP API to allow for caching and user agent spoofing, fall back if necessary
+Â Â Â Â Â Â Â Â if ( function_exists( 'wp_remote_get') )
+Â Â Â Â Â Â Â Â Â Â Â Â $data = wp_remote_retrieve_body( wp_remote_get($url, array('user-agent' => $this->user_agent) ) );
+Â Â Â Â Â Â Â Â else
+Â Â Â Â Â Â Â Â Â Â Â Â $data = file_get_contents($url);
+Â 
+Â Â Â Â Â Â Â Â //parse the XML into a PHP object
+Â Â Â Â Â Â Â Â $xml = simplexml_load_string($data, 'SimpleXMLElement', LIBXML_NOCDATA);
+Â 
+Â Â Â Â Â Â Â Â return $xml;
+Â Â Â Â }
+Â 
+Â Â Â Â public function get_map($category = 'categories') {
+Â Â Â Â Â Â Â Â return $this->get_url($this->maps_base . $category . '.xml');
+Â Â Â Â }
+Â 
+Â Â Â Â public function get_schedule($year = '', $term ='', $dept = ''){
+Â 
+Â Â Â Â Â Â Â Â //if no year was given, assume the current year
+Â Â Â Â Â Â Â Â if ($year == '')
+Â Â Â Â Â Â Â Â Â Â Â Â $year = date('Y');
+Â 
+Â Â Â Â Â Â Â Â //if no term is given, calculate the current term
+Â Â Â Â Â Â Â Â if ($term == '')
+Â Â Â Â Â Â Â Â Â Â Â Â $term = $this->get_term();
+Â 
+Â Â Â Â Â Â Â Â //form URL and call
+Â Â Â Â Â Â Â Â return $this->get_url($this->schedule_base . '?termCode=' . $year . $term . '&deptCode=' . $dept);
+Â Â Â Â }
+Â 
+Â Â Â Â public function get_term() {
+Â 
+Â Â Â Â Â Â Â Â //get the current month as 01-12
+Â Â Â Â Â Â Â Â $m = date('M');
+Â 
+Â Â Â Â Â Â Â Â //if it is jan. - april, we're in the spring
+Â Â Â Â Â Â Â Â if ($m < 5)
+Â Â Â Â Â Â Â Â Â Â Â Â return '01';
+Â 
+Â Â Â Â Â Â Â Â //if it's May - August, we're in the summer
+Â Â Â Â Â Â Â Â else if ($m < 9) {
+Â Â Â Â Â Â Â Â Â Â Â Â return '02';
+Â Â Â Â Â Â Â Â } 
+Â 
+Â Â Â Â Â Â Â Â //otherwise, it's fall
+Â Â Â Â Â Â Â Â else return '03';
+Â Â Â Â }
+Â 
 }
 ?>
